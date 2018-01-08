@@ -1,0 +1,51 @@
+
+grammar gramaticaslr
+{
+    analysis   SLR1;
+    nonterminal S,V,E;
+    terminal    id,n;
+
+    S := id| V '=' E;
+    V := id;
+    E := V | n;
+
+}
+solution gramaticaslr
+{
+		nullables{
+
+		}
+		firsts{
+			S	= {id};
+			V 	= {id};
+			E 	= {id,n};
+		}
+		followers{
+			S	= {$};
+			V 	= {'=',$};
+			E 	= {$};
+		}
+		slr1_parsing_table{
+			action_table{
+				[0, id] 	= d2;
+				[1, $] 		= aceptar;
+				[2, $] 	= {r1,r3};
+        [2, '='] 	= {r3};
+        [3, '='] 	= {d4};
+        [4, id] 	= {d8};
+				[4, n] 	= {d7};
+				[5, $] 	= {r2};
+        [6, $] 	= {r4};
+        [7, $] 	= {r5};
+        [8, $] 	= {r3};
+        [8, '='] 	= {r3};
+
+			}
+			goto_table{
+				[0, S] 		= 1;
+        [0, V] 		= 3;
+				[4, V] 		= 6;
+				[4, E]		= 5;
+			}
+		}
+}

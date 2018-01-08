@@ -1,0 +1,56 @@
+grammar gram_ll1
+{
+    nonterminal S,B,C,P;
+    terminal  return, end, exit;
+
+    // Si no se indica ningun analisis por defecto es el LL(1)
+    S := B;
+    B:= C ';' ;
+    C:=P return|end;
+    P:= B exit;
+
+}
+grammar gram_ll2
+{
+    nonterminal S,B,C,P,P2;
+    terminal  return, end, exit;
+
+    // Si no se indica ningun analisis por defecto es el LL(1)
+    S := B;
+    B:= end ';' C;
+    C:=exit return ';' C| ;
+
+
+}
+solution gram_ll2{
+	nullables{
+		C;
+	}
+	firsts{
+		S      = {end};
+ 		B = {end};
+ 		C    = {exit};
+
+	}
+	followers{
+		S      = {$};
+ 		B = {$};
+ 		C    = {$};
+
+
+	}
+	lookaheads{
+		1 = {end};
+		2 = {end};
+		3 = {exit};
+		4 = {$};
+
+	}
+	ll1_parsing_table{
+		[S, end] = 1;
+		[B,    end] = 2;
+		[C,  exit] = 3;
+		[C,   $] = 4;
+
+	}
+}

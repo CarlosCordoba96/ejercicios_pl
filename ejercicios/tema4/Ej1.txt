@@ -1,0 +1,44 @@
+grammar t4_ejer1
+{
+    analysis    LL1;
+    terminal a, b, c;
+    nonterminal S, D, C,R,R2;
+
+	S := '{' D R '}';
+	D := a C;
+	C := D | ;
+  R := R2;
+  R2 := b c R2| ;
+
+}
+
+solution t4_ejer1{
+	nullables{
+		C,R,R2;
+
+	}
+	firsts{
+		S = {'{'};
+		D  = {a};
+		C = {a};
+    R ={b};
+    R2={b};
+
+	}
+	followers{
+    S = {$};
+		D  = {b,'}'};
+		C = {b,'}'};
+    R ={'}'};
+    R2={'}'};
+	}
+	lookaheads{
+		1 = {'{'};
+		2 = {a};
+		3 = {a};
+		4 = {b,'}'};
+		5 = {b,'}'};
+		6 = {b};
+    7 = {'}'};
+	}
+}

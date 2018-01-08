@@ -1,0 +1,60 @@
+grammar ejercicio_lalr3
+{
+analysis LALR1;
+nonterminal S,A,B;
+terminal a,x,b;
+
+S := A| x b;
+A:= a A b| B;
+B:=x;
+}
+solution ejercicio_lalr3
+{
+		nullables{
+
+		}
+		firsts{
+			S	= {x,a};
+			A 	= {a,x};
+			B={x};
+		}
+		followers{
+			S	= {$};
+			A 	= {b,x,$};
+			B = {b,x,$};
+		}
+		lalr1_parsing_table{
+			action_table{
+				[0, a] 	= d4;
+        [0, x] 	= d3;
+				[1, $] 		= aceptar;
+				[2, $] 	= {r1};
+
+
+        [3, b] 	= {d6};
+				[3, $] 	= {r5};
+        [4,a]=d4;
+				[4, x] 	= {d8};
+
+				[5, b] 	= {r4};
+        [5, $] 	= {r4};
+        [6,$ ] 	= {r2};
+
+        [7, b] 	= {d9};
+        [8,b] ={r5};
+        [9,b] ={r3};
+        [9,$]=r3;
+
+
+			}
+			goto_table{
+				[0, S] 		= 1;
+        [0, A] 		= 2;
+				[0,B]=5;
+				[4, A] 		= 7;
+				[4,B]=5;
+
+
+			}
+		}
+}

@@ -1,0 +1,48 @@
+grammar T4_ejer4{
+	analysis LL1;
+	terminal inst, tipo, blq, fbloq, id, fin;
+	nonterminal S, B, T, R, V, W;
+	
+	S := T R V B;
+	B := inst B | ;
+	T := tipo | ;
+	R := blq V fbloq | ;
+	V := id W | ;
+	W := S fin | ';';
+}
+
+solution T4_ejer4{
+	nullables{
+		S, B, T, R, V ;
+	}
+	firsts{
+		B = {inst};
+		T = {tipo};
+		R = {blq};
+		V = {id};
+		S = {inst, tipo, blq, id };
+		W = {inst, tipo, blq, id, fin, ';'};
+	}
+	followers{
+		S = {$, fin};
+		B = {$, fin};
+		T = {blq, id, inst, fin, $};
+		R = {id, inst, fin, $};
+		V = {fbloq, inst, fin, $};
+		W = {fbloq, inst, fin, $};
+	}
+	lookaheads{
+		1 = {inst, tipo, blq, id, fin, $};  /* S := T R V B; */
+		2 = {inst}; /* B-> inst B; */
+		3 = {$, fin};
+		4 = {tipo};					/*T := tipo */	
+		5 = {blq, id, inst, fin, $};	/* T := ; */
+		6 = {blq};	/* R := blq V fbloq */
+		7 = {id, inst,fin, $}; /* R:= */
+		8 = {id}; /* V := id W */
+		9 = {fbloq, inst, $, fin };  /* V := */
+		10 = {inst, tipo, blq, id, fin}; /* W:= S fin; */
+		11 = {';'}; /* W->';' ; */		
+			
+	}
+}

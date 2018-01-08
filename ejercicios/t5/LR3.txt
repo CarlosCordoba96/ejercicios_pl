@@ -1,0 +1,60 @@
+grammar ejercicio_2
+{
+analysis LR1;
+nonterminal S,A;
+terminal a,b,c,d,e;
+
+S := A d| A e;
+A:= a A b| c;
+}
+
+solution ejercicio2
+{
+		nullables{
+
+		}
+		firsts{
+			S	= {a,c};
+			A 	= {a,c};
+		}
+		followers{
+			S	= {$};
+			A 	= {d,e,b};
+
+		}
+		lr1_parsing_table{
+			action_table{
+				[0, a] 	= d3;
+        [0, c] 	= d4;
+				[1, $] 		= aceptar;
+				[2, d] 	= {d5};
+        [2, e] 	= {d6};
+
+        [3, a] 	= {d8};
+				[3, c] 	= {d9};
+				[4, d] 	= {r4};
+        [4, e] 	= {r4};
+
+        [5, $] 	= {r1};
+        [6,$ ] 	= {r2};
+
+        [7, b] 	= {d10};
+        [8,a] ={d8};
+        [8,c] ={d9};
+				[9,b]={r4};
+        [10,d]={r3};
+        [10,e]={r3};
+        [11,b]={d12};
+        [12,b]={r3};
+
+			}
+			goto_table{
+				[0, S] 		= 1;
+        [0, A] 		= 2;
+				[3, A] 		= 7;
+				[8, A]		= 11;
+
+
+			}
+		}
+}

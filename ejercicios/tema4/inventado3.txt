@@ -1,0 +1,48 @@
+grammar gram_ll1
+{
+      nonterminal S,A,B,C;
+    terminal x;
+
+    // Si no se indica ningun analisis por defecto es el LL(1)
+    S :='(' A ')';
+    A := C B ;
+    B:=';' A | ;
+    C := x| S;
+
+}
+solution gram_ll1{
+	nullables{
+		B;
+	}
+	firsts{
+		S      = {'('};
+ 		A = {'(', x};
+ 		B    = {'(', x};
+		C   = {';'};
+	}
+	followers{
+		S      = {$,')',';'};
+ 		A = {')'};
+ 		B    = {')'};
+		C   = {')',';'};
+
+	}
+	lookaheads{
+		1 = {'('};
+		2 = {x,'('};
+		3 = {x};
+		4 = {'('};
+		5 = {';'};
+		6 = {')'};
+
+	}
+	ll1_parsing_table{
+		[S, '('] = 1;
+		[A,    '('] = 2;
+		[C,  '('] = 6;
+		[A,   x] = 2;
+		[C, x] = 5;
+		[B,      ')'] = 4;
+		[B,      ';'] = 3;
+	}
+}

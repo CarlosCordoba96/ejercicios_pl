@@ -1,0 +1,61 @@
+lexer calcLexer
+%{
+	tokens
+	{
+                num     := [0-9];
+	}
+
+%}
+grammar gramatica
+{
+    analysis    LR1;
+use calcLexer;
+    nonterminal S,A,B;
+
+
+    S:=A '0'|B '2';
+    A:= '1'| '2' B '0';
+    B:='1';
+}
+solution gramatica
+{
+		nullables{
+
+		}
+		firsts{
+			S	= {'1','2'};
+			A 	= {'1','2'};
+			B 	= {'1'};
+		}
+		followers{
+			S	= {$};
+			A 	= {'0'};
+			B 	= {'2','0'};
+		}
+		lr1_parsing_table{
+			action_table{
+				[0,'1']= d4;
+				[0,'2']=d5;
+				[1,$]=aceptar;
+				[2,'0']=d6;
+				[3,'2']=d7;
+				[4,'0']=r3;
+				[4,'2']=r5;
+				[5,'1']=d9;
+				[6,$]=r1;
+				[7,$]=r2;
+				[8,'0']=d10;
+				[9,'0']=r5;
+				[10,'0']=r4;
+
+
+			}
+			goto_table{
+				[0, S] 		= 1;
+        [0, A] 		= 2;
+				[0,B]=3;
+				[5, B] 		= 8;
+
+			}
+		}
+}

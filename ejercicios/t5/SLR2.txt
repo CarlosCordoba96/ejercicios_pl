@@ -1,0 +1,55 @@
+/*
+ * Ejemplo de analisis SLR(1) y LR(1).
+ */
+
+grammar gramatica
+{
+    analysis    SLR1;
+    nonterminal S, X;
+    terminal    a,b;
+
+    S := X X;
+    X := a X| b;
+}
+solution gramatica
+{
+		nullables{
+
+		}
+		firsts{
+			S	= {a,b};
+			X 	= {a,b};
+
+		}
+		followers{
+			S	= {$};
+			X 	= {a,b,$};
+
+		}
+		slr1_parsing_table{
+			action_table{
+				[0, a]  	= d3;
+        [0, b] 	= d4;
+				[1, $] 		= aceptar;
+				[2, a] 	= {d3};
+        [2, b] 	= {d4};
+        [3, a] 	= {d3};
+        [3, b] 	= {d4};
+
+        [4, a] 	= {r3};
+				[4, b] 	= {r3};
+        [4, $] 	= {r3};
+				[5, $ ]	= {r1};
+        [6, a] 	= {r2};
+        [6, b] 	= {r2};
+        [6, $] 	= {r2};
+
+			}
+			goto_table{
+				[0, S] 		= 1;
+        [0, X] 		= 2;
+				[2,X]=5;
+        [3,X]=6;
+			}
+		}
+}
