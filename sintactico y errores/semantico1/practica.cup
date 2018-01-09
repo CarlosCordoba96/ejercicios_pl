@@ -1,0 +1,39 @@
+/*­Sección de declaraciones package e imports­­­­­­­­­*/
+import java_cup.runtime.*;
+/*­­­­ Sección componentes de código de usuario ­­­­*/
+parser code {:
+    public void report_error(String message, Object info) {
+       	StringBuffer m = new StringBuffer("Error");
+		System.out.println("Mensaje: "+message);
+		System.out.println("info: "+info.toString());
+		if(info instanceof java_cup.runtime.Symbol) {
+			java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
+			if(s.left >= 0) {
+				m.append(" en linea "+(s.left+1));
+				/*Comprueba si el numero de columna es mayoro igual que cero */
+				if (s.right >= 0)
+					m.append(", y columna "+(s.right+1));
+			}
+		}
+		m.append(" : "+message);
+		System.err.println(m);
+    }
+    public void report_fatal_error(String message, Object info) {
+       	report_error(message, info);
+		System.exit(1);
+    }
+
+
+:};
+/*­­­ Declaración de la lista de símbolos de la gramática ­­­­­*/
+
+/* Produciones de flujo normal */
+terminal  String a,b,c;
+
+non terminal Integer S,A,B,C;
+
+/* ­­­­­­­­­­­­­­ Declaración de la gramática  ­­­­­­­­­­­ */
+S::= A:a B:b C:c {:System.out.println("nº de A:"+a+" nº de B:"+b+"nº de C:"+c); :};
+A::= a A:a1{: RESULT= a1+1;:}| a {: RESULT= 1; :} ;
+B::= b B:b1{: RESULT= b1+1;:} | b{: RESULT= 1;:} ;
+C::=c C:c1{: RESULT= 1+1;:} | c{: RESULT= 1; :} ;
