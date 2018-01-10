@@ -8,7 +8,6 @@ parser code {:
 		System.out.println("info: "+info.toString());
 		if(info instanceof java_cup.runtime.Symbol) {
 			java_cup.runtime.Symbol s=((java_cup.runtime.Symbol)info);
-			/* Comprueba si el numero de línea es mayor o igual que cero */
 			if(s.left >= 0) {
 				m.append(" en linea "+(s.left+1));
 				/*Comprueba si el numero de columna es mayoro igual que cero */

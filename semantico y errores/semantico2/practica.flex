@@ -29,9 +29,11 @@ private Symbol symbol(int type,Object value){
 
 %%
 /* ------------------------ Seccion de reglas lexicas ---------------------- */
+[0-9]+		{return symbol(sym.Number,new Integer(yytext()));}
+"oct" {return symbol(sym.OCT,new String(yytext()));}
+"hex" {return symbol(sym.HEX,new String(yytext()));}
+"bin" {return symbol(sym.BIN,new String(yytext()));}
+";"                        {return symbol(sym.PUNTOYCOMA); }
 
-"a"                        {return symbol(sym.a,new String(yytext())); }
-"b"                         {return symbol(sym.b,new String(yytext())); }
-"c"                {return symbol(sym.c,new String(yytext())); }
 
 [ \t\r\n\f] { /* ignora delimitadores */ }

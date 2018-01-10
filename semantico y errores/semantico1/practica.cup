@@ -32,7 +32,7 @@ terminal  String a,b,c;
 
 non terminal Integer S,A,B,C;
 
-/* ­­­­­­­­­­­­­­ Declaración de la gramática  ­­­­­­­­­­­ */
+/* ­­­­­­­­­­­­­­ Declaración de la gramática que imprima el nº de cada carácter leido  ­­­­­­­­­­­ */
 S::= A:a B:b C:c {:System.out.println("nº de A:"+a+" nº de B:"+b+"nº de C:"+c); :};
 A::= a A:a1{: RESULT= a1+1;:}| a {: RESULT= 1; :} ;
 B::= b B:b1{: RESULT= b1+1;:} | b{: RESULT= 1;:} ;

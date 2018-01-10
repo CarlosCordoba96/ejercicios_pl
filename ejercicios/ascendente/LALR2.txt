@@ -1,0 +1,57 @@
+grammar ejercicio_lalr2
+{
+analysis LALR1;
+nonterminal S,A;
+terminal a,b,c,d,e;
+
+S := A d| A e;
+A:= a A b| c;
+}
+// L= a^n c b^n {d|e}/ n>=0
+solution ejercicio_lalr2
+{
+		nullables{
+
+		}
+		firsts{
+			S	= {a,c};
+			A 	= {a,c};
+		}
+		followers{
+			S	= {$};
+			A 	= {d,e,b};
+
+		}
+		lalr1_parsing_table{
+			action_table{
+				[0, a] 	= d3;
+        [0, c] 	= d4;
+				[1, $] 		= aceptar;
+				[2, d] 	= {d5};
+        [2, e] 	= {d6};
+
+        [3, a] 	= {d3};
+				[3, c] 	= {d4};
+        [4,b]=r4;
+				[4, d] 	= {r4};
+        [4, e] 	= {r4};
+
+        [5, $] 	= {r1};
+        [6,$ ] 	= {r2};
+
+        [7, b] 	= {d8};
+        [8,b] ={r3};
+        [8,d] ={r3};
+        [8,e]=r3;
+
+
+			}
+			goto_table{
+				[0, S] 		= 1;
+        [0, A] 		= 2;
+				[3, A] 		= 7;
+
+
+			}
+		}
+}

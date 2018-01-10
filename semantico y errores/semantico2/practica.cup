@@ -28,14 +28,17 @@ parser code {:
 /*­­­ Declaración de la lista de símbolos de la gramática ­­­­­*/
 
 /* Produciones de flujo normal */
-terminal  String a,b,c;
+terminal Integer Number;
+terminal PUNTOYCOMA;
+terminal String OCT,HEX,BIN;
 
-non terminal Integer S,A,B,C;
+non terminal Object S,A,C;
+non terminal String B;
 
-/* ­­­­­­­­­­­­­­ Declaración de la gramática  ­­­­­­­­­­­
-Imprimir los nº de cada tipo de letra al final del árbol
+/* ­­­­­­­­­­­­­­
+Gramatica que lee numeros enteros y los convierte a un nº de base que tu le indiques
  */
-S::= {:a1=0; :}A:a1{:b1=0;:} B:b1 {:c1=0; :}C:c1;
-A::= a {:a1=RESULT+1; :}A:a1| a {: int res=RESULT+1; System.out.println("Nº de A:"+res); :} ;
-B::= b {:b1=RESULT+1; :}B:b1 | b {:int res=RESULT+1; System.out.println("Nº de B:"+res); :};
-C::=c {:c1=RESULT+1; :} C:c1 | c{: int res=RESULT+1;System.out.println("Nº de C:"+res); :} ;
+S::= S A| A;
+A::= Number:n B:b PUNTOYCOMA  {:  Converter c=new Converter(n,b); :}|
+Number error  PUNTOYCOMA {: parser.report_error("revise el nº que has introducido",null);:};
+B::=OCT:oct {: RESULT=oct; :}|HEX:hex{:RESULT=hex; :}|BIN:bin{:RESULT=bin;:};
